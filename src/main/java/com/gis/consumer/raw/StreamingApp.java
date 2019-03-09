@@ -1,6 +1,7 @@
 package com.gis.consumer.raw;
 
 import com.gis.consumer.beans.GISRecord;
+import org.apache.commons.lang.StringUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.spark.SparkConf;
@@ -23,6 +24,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.datastax.spark.connector.japi.CassandraJavaUtil.mapToRow;
+import static com.datastax.spark.connector.japi.CassandraJavaUtil.javaFunctions;
+
 public class StreamingApp {
     //default values
     private static String brokers = "localhost:9092";
@@ -37,7 +41,8 @@ public class StreamingApp {
         }
 
         SparkConf sparkConf = new SparkConf().setAppName(
-                "GIS-Streaming-Raw");
+                "GIS-Streaming-Raw").setMaster("local[*]");
+        //sparkConf.set("spark.cassandra.connection.host", "localhost");
 
         // Create the context with 2 seconds batch size
         JavaStreamingContext jssc = new JavaStreamingContext(sparkConf,
@@ -99,23 +104,25 @@ public class StreamingApp {
                         String[] gisRecordArr = gisRecordStr.split(",");
                         if (gisRecordArr.length == 11) {
                             GISRecord gisRecord = new GISRecord();
-                            gisRecord.setCrimeId(gisRecordArr[0]);
+                            gisRecord.setCrimeid(gisRecordArr[0]);
                             gisRecord.setMonth(gisRecordArr[1]);
-                            gisRecord.setReportedBy(gisRecordArr[2]);
-                            gisRecord.setFallsWithin(gisRecordArr[3]);
+                            gisRecord.setReportedby(gisRecordArr[2]);
+                            gisRecord.setFallswithin(gisRecordArr[3]);
                             gisRecord.setLongitude(gisRecordArr[4]);
                             gisRecord.setLatitude(gisRecordArr[5]);
                             gisRecord.setLocation(gisRecordArr[6]);
-                            gisRecord.setLsoaCode(gisRecordArr[7]);
-                            gisRecord.setLsoaName(gisRecordArr[8]);
-                            gisRecord.setCrimeType(gisRecordArr[9]);
-                            gisRecord.setOutcomeCategory(gisRecordArr[10]);
+                            gisRecord.setLsoacode(gisRecordArr[7]);
+                            gisRecord.setLsoaname(gisRecordArr[8]);
+                            gisRecord.setCrimetype(gisRecordArr[9]);
+                            gisRecord.setOutcomecategory(gisRecordArr[10]);
                             return gisRecord;
                         } else {
                             //handle bad data
+                            GISRecord gisRecord = new GISRecord();
+                            gisRecord.setCrimeid("BadKey_" + System.currentTimeMillis());
                             System.out.println("BD: " + gisRecordStr);
                             System.out.println("length : " + gisRecordArr.length);
-                            return new GISRecord();
+                            return gisRecord;
                         }
                     }
                 });
@@ -124,7 +131,8 @@ public class StreamingApp {
                 //wordsDataFrame.write().mode(SaveMode.Append).saveAsTable("gisRecord");
                 session.sql("select count(*) from gisRecord").show();
                 // persist
-                // rowRDD.saveAsTextFile("file:///" + outputDir);
+                javaFunctions(gisRecordRDD).writerBuilder(
+                        "gis", "gisrecord", mapToRow(GISRecord.class)).saveToCassandra();
 
             }
         });

@@ -99,17 +99,17 @@ public class StreamingApp {
                         String[] gisRecordArr = gisRecordStr.split(",");
                         if (gisRecordArr.length == 11) {
                             GISRecord gisRecord = new GISRecord();
-                            gisRecord.setCrimeId(gisRecordArr[0]);
+                            gisRecord.setCrimeid(gisRecordArr[0]);
                             gisRecord.setMonth(gisRecordArr[1]);
-                            gisRecord.setReportedBy(gisRecordArr[2]);
-                            gisRecord.setFallsWithin(gisRecordArr[3]);
+                            gisRecord.setReportedby(gisRecordArr[2]);
+                            gisRecord.setFallswithin(gisRecordArr[3]);
                             gisRecord.setLongitude(gisRecordArr[4]);
                             gisRecord.setLatitude(gisRecordArr[5]);
                             gisRecord.setLocation(gisRecordArr[6]);
-                            gisRecord.setLsoaCode(gisRecordArr[7]);
-                            gisRecord.setLsoaName(gisRecordArr[8]);
-                            gisRecord.setCrimeType(gisRecordArr[9]);
-                            gisRecord.setOutcomeCategory(gisRecordArr[10]);
+                            gisRecord.setLsoacode(gisRecordArr[7]);
+                            gisRecord.setLsoaname(gisRecordArr[8]);
+                            gisRecord.setCrimetype(gisRecordArr[9]);
+                            gisRecord.setOutcomecategory(gisRecordArr[10]);
                             return gisRecord;
                         } else {
                             //handle bad data

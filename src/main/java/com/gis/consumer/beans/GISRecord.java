@@ -1,24 +1,30 @@
 package com.gis.consumer.beans;
 
-public class GISRecord {
-    private String crimeId;
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.Table;
+
+import java.io.Serializable;
+
+@Table(keyspace = "gis", name = "gisrecord")
+public class GISRecord implements Serializable {
+    private String crimeid;
     private String month;
-    private String reportedBy;
-    private String fallsWithin;
+    private String reportedby;
+    private String fallswithin;
     private String longitude;
     private String latitude;
     private String location;
-    private String lsoaCode;
-    private String lsoaName;
-    private String crimeType;
-    private String outcomeCategory;
+    private String lsoacode;
+    private String lsoaname;
+    private String crimetype;
+    private String outcomecategory;
 
-    public String getCrimeId() {
-        return crimeId;
+    public String getCrimeid() {
+        return crimeid;
     }
 
-    public void setCrimeId(String crimeId) {
-        this.crimeId = crimeId;
+    public void setCrimeid(String crimeid) {
+        this.crimeid = crimeid;
     }
 
     public String getMonth() {
@@ -29,20 +35,20 @@ public class GISRecord {
         this.month = month;
     }
 
-    public String getReportedBy() {
-        return reportedBy;
+    public String getReportedby() {
+        return reportedby;
     }
 
-    public void setReportedBy(String reportedBy) {
-        this.reportedBy = reportedBy;
+    public void setReportedby(String reportedby) {
+        this.reportedby = reportedby;
     }
 
-    public String getFallsWithin() {
-        return fallsWithin;
+    public String getFallswithin() {
+        return fallswithin;
     }
 
-    public void setFallsWithin(String fallsWithin) {
-        this.fallsWithin = fallsWithin;
+    public void setFallswithin(String fallswithin) {
+        this.fallswithin = fallswithin;
     }
 
     public String getLongitude() {
@@ -69,35 +75,35 @@ public class GISRecord {
         this.location = location;
     }
 
-    public String getLsoaCode() {
-        return lsoaCode;
+    public String getLsoacode() {
+        return lsoacode;
     }
 
-    public void setLsoaCode(String lsoaCode) {
-        this.lsoaCode = lsoaCode;
+    public void setLsoacode(String lsoacode) {
+        this.lsoacode = lsoacode;
     }
 
-    public String getLsoaName() {
-        return lsoaName;
+    public String getLsoaname() {
+        return lsoaname;
     }
 
-    public void setLsoaName(String lsoaName) {
-        this.lsoaName = lsoaName;
+    public void setLsoaname(String lsoaname) {
+        this.lsoaname = lsoaname;
     }
 
-    public String getCrimeType() {
-        return crimeType;
+    public String getCrimetype() {
+        return crimetype;
     }
 
-    public void setCrimeType(String crimeType) {
-        this.crimeType = crimeType;
+    public void setCrimetype(String crimetype) {
+        this.crimetype = crimetype;
     }
 
-    public String getOutcomeCategory() {
-        return outcomeCategory;
+    public String getOutcomecategory() {
+        return outcomecategory;
     }
 
-    public void setOutcomeCategory(String outcomeCategory) {
-        this.outcomeCategory = outcomeCategory;
+    public void setOutcomecategory(String outcomecategory) {
+        this.outcomecategory = outcomecategory;
     }
 }
